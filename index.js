@@ -1,9 +1,9 @@
-const express = require('express')
-const app = express()
+const app = require('./app')
+const connectDB = require('./db')
 
-app.use(express.json())
+connectDB()
 
-const PORT = 6000
+const PORT = 5000
 
 app.listen(PORT, () => {
     console.log(`Server OK on port ${PORT}`)
