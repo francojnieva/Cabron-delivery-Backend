@@ -39,18 +39,24 @@ const loginUser = async (req, res) => {
 
     if (!password || !email) return res.status(400).json({ message: 'Todos los campos son obligatorios' })
     
-    const user = await User.findOne({ email })
-    if (!user) return res.status(400).json({ message: 'Correo electrónico o contraseña incorrectos' })
+    try {
+        const user = await User.findOne({ email })
+        if (!user) return res.status(400).json({ message: 'Correo electrónico o contraseña incorrectos' })
 
-    const matchPassword = await bcrypt.compare(password, user.password)
-    if (!matchPassword) return res.status(400).json({ message: 'Correo electrónico o contraseña incorrectos' })
+        const matchPassword = await bcrypt.compare(password, user.password)
+        if (!matchPassword) return res.status(400).json({ message: 'Correo electrónico o contraseña incorrectos' })
 
-    const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET_KEY, { expiresIn: process.env.JWT_EXPIRATION})
+        const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET_KEY, { expiresIn: process.env.JWT_EXPIRATION})
 
-    // const cookieOptions = { expires: process.env.COOKIE_EXPIRES, path: '/' }
+        const cookieOptions = { expires: process.env.COOKIE_EXPIRES, path: '/', httpOnly: true }
 
-    res.cookie('token', token)
-    res.status(200).json({ message: 'Inicio de sesión exitoso' })
+        res.cookie('token', token, cookieOptions)
+        res.status(200).json({ message: 'Inicio de sesión exitoso' })
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: 'Error al iniciar sesión' })
+    }
 }
 
 const getAllUsers = async (req, res) => {
@@ -78,9 +84,26 @@ const getOneUser = async (req, res) => {
     }
 }
 
+const deleteUser = async (req, res) => {
+    try {
+        const { id } = req.query
+        const user = await User.findByIdAndDelete(id)
+
+        if (!user) return res.status(404).json({ message: 'Usuario no encontrado' })
+    
+        res.status(200).json({ message: 'Usuario eliminado' })
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: 'Error al borrar el usuario' })
+    }
+}
+
+
 module.exports = {
     registerUser,
     loginUser,
     getAllUsers,
-    getOneUser
+    getOneUser,
+    deleteUser
 }
