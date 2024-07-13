@@ -35,11 +35,11 @@ const registerUser = async (req, res) => {
 }
 
 const loginUser = async (req, res) => {
-    const { email, password } = req.body
-
-    if (!password || !email) return res.status(400).json({ message: 'Todos los campos son obligatorios' })
-    
     try {
+        const { email, password } = req.body
+
+        if (!password || !email) return res.status(400).json({ message: 'Todos los campos son obligatorios' })
+
         const user = await User.findOne({ email })
         if (!user) return res.status(400).json({ message: 'Correo electrónico o contraseña incorrectos' })
 
@@ -48,7 +48,7 @@ const loginUser = async (req, res) => {
 
         const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET_KEY, { expiresIn: process.env.JWT_EXPIRATION})
 
-        const cookieOptions = { expires: process.env.COOKIE_EXPIRES, path: '/', httpOnly: true }
+        const cookieOptions = { maxAge: process.env.COOKIE_EXPIRES, path: '/', httpOnly: true }
 
         res.cookie('token', token, cookieOptions)
         res.status(200).json({ message: 'Inicio de sesión exitoso' })
