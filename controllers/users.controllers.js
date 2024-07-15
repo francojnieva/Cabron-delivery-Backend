@@ -48,18 +48,13 @@ const loginUser = async (req, res) => {
 
         const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET_KEY, { expiresIn: process.env.JWT_EXPIRATION})
 
-        const cookieOptions = { maxAge: process.env.COOKIE_EXPIRES, path: '/', httpOnly: true }
-
-        res.cookie('token', token, cookieOptions)
-        res.status(200).json({ message: 'Inicio de sesión exitoso' })
+        res.status(200).json({ message: 'Inicio de sesión exitoso', token })
 
     } catch (error) {
         console.log(error)
         res.status(500).json({ message: 'Error al iniciar sesión' })
     }
 }
-
-const auth = (req, res) => res.status(200)
 
 const getAllUsers = async (req, res) => {
     try {
@@ -105,7 +100,6 @@ const deleteUser = async (req, res) => {
 module.exports = {
     registerUser,
     loginUser,
-    auth,
     getAllUsers,
     getOneUser,
     deleteUser
