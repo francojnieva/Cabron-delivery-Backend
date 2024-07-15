@@ -59,6 +59,8 @@ const loginUser = async (req, res) => {
     }
 }
 
+const auth = (req, res) => res.status(200)
+
 const getAllUsers = async (req, res) => {
     try {
         const users = await User.find()
@@ -103,6 +105,7 @@ const deleteUser = async (req, res) => {
 module.exports = {
     registerUser,
     loginUser,
+    auth,
     getAllUsers,
     getOneUser,
     deleteUser
