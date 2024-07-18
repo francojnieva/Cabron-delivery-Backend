@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User.models');
+const templatesRegister = require('../services/nodemailer/templates');
 
 const registerUser = async (req, res) => {
     try {
@@ -26,6 +27,8 @@ const registerUser = async (req, res) => {
         })
         await newUser.save()
 
+        await templatesRegister(email,username)
+
         res.status(201).json({ message: 'Usuario registrado con éxito' })
         
     } catch (error) {
@@ -46,8 +49,8 @@ const loginUser = async (req, res) => {
         const matchPassword = await bcrypt.compare(password, user.password)
         if (!matchPassword) return res.status(400).json({ message: 'Correo electrónico o contraseña incorrectos' })
 
-        const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET_KEY, { expiresIn: process.env.JWT_EXPIRATION})
-
+        const token = jwt.sign({ id: user._id, email: user.email, name: user.username, rol: user.rol }, process.env.JWT_SECRET_KEY)
+        
         res.status(200).json({ message: 'Inicio de sesión exitoso', token })
 
     } catch (error) {
