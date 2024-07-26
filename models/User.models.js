@@ -27,7 +27,8 @@ const userSchema = new mongoose.Schema({
     blocked: {
         type: Boolean,
         default: false
-    }
+    },  
+    cart: []
 })
 
 const User = mongoose.model('User', userSchema)
