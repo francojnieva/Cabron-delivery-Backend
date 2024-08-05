@@ -104,6 +104,32 @@ const addProductToCart = async (req, res) => {
     }
 }
 
+const getProductToCart = async (req, res) => {
+    const  { userId } = req.body
+
+    const user = await User.findById(userId)
+    if (!user) return res.status(404).json({ message: 'Usuario no encontrado' })
+
+    const productsCart = user.cart
+    if (productsCart.length <= 0) {
+        res.json({message: 'Carrito vacio'})
+    } else {
+        res.status(200).json(productsCart)
+    }
+}
+
+const deleteProductInCart = async (req, res) => {
+    const  { id } = req.query
+    const  { userId } = req.body
+    const user = await User.findById(userId)
+    const product = user.cart.findIndex(prod => prod._id.toString() === id)
+    const deletedProduct = user.cart.splice(product,1)
+
+
+    await user.save()
+    res.status(200).json({message: 'Producto borrado'})
+}
+
 module.exports = {
     createProduct,
     getAllProducts,
@@ -111,4 +137,6 @@ module.exports = {
     editProduct,
     deleteProduct,
     addProductToCart,
+    getProductToCart,
+    deleteProductInCart
 }
