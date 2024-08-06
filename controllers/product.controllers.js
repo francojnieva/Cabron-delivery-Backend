@@ -48,6 +48,22 @@ const getOneProduct = async (req, res) => {
     }
 }
 
+const getDiscountProducts = async (req, res) => {
+    try {
+        const products = await ProductsModel.find()
+        const discountProducts = products.filter(product => product.discount >= 1)
+
+        if (!discountProducts) {
+           return res.json({message: 'No hay productos con descuentos'})
+        }
+        
+        res.status(200).json(discountProducts)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: 'Error al obtener los productos con descuentos' })
+    }
+}
+
 const editProduct = async (req, res) => {
     try {
         const { id } = req.query
@@ -104,39 +120,13 @@ const addProductToCart = async (req, res) => {
     }
 }
 
-const getProductToCart = async (req, res) => {
-    const  { userId } = req.body
-
-    const user = await User.findById(userId)
-    if (!user) return res.status(404).json({ message: 'Usuario no encontrado' })
-
-    const productsCart = user.cart
-    if (productsCart.length <= 0) {
-        res.json({message: 'Carrito vacio'})
-    } else {
-        res.status(200).json(productsCart)
-    }
-}
-
-const deleteProductInCart = async (req, res) => {
-    const  { id } = req.query
-    const  { userId } = req.body
-    const user = await User.findById(userId)
-    const product = user.cart.findIndex(prod => prod._id.toString() === id)
-    const deletedProduct = user.cart.splice(product,1)
-
-
-    await user.save()
-    res.status(200).json({message: 'Producto borrado'})
-}
 
 module.exports = {
     createProduct,
     getAllProducts,
     getOneProduct,
+    getDiscountProducts,
     editProduct,
     deleteProduct,
-    addProductToCart,
-    getProductToCart,
-    deleteProductInCart
+    addProductToCart
 }
