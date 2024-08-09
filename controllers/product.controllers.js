@@ -121,6 +121,25 @@ const addProductToCart = async (req, res) => {
 }
 
 
+const updateProductCart = async (req, res) => {
+    try {
+        const { id, cart } = req.body
+
+        const user = await User.findById(id)
+    
+        user.cart = cart    
+        await user.save()
+
+        res.status(200).json({ message: 'Carrito actualizado' })
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: 'No se pudo acutalizar el carrito' })
+    }
+    
+}
+
+
 module.exports = {
     createProduct,
     getAllProducts,
@@ -128,5 +147,6 @@ module.exports = {
     getDiscountProducts,
     editProduct,
     deleteProduct,
-    addProductToCart
+    addProductToCart,
+    updateProductCart
 }
