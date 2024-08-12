@@ -125,11 +125,7 @@ const getProductToCart = async (req, res) => {
         const { userId } = req.query
         const user = await User.findById(userId)
         const productsCart = user.cart
-        if (productsCart.length <= 0) {
-            res.json({message: 'Carrito vacio'})
-        } else {
-            res.status(200).json(productsCart)
-        }
+        res.status(200).json(productsCart)
     } catch (error) {
         console.log(error)
         res.status(500).json({message: 'Error al obtener los productos del carrito'})
