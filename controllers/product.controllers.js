@@ -122,8 +122,7 @@ const addProductToCart = async (req, res) => {
 
 const getProductToCart = async (req, res) => {
     try {
-        const  { userId } = req.body
-
+        const { userId } = req.query
         const user = await User.findById(userId)
         const productsCart = user.cart
         if (productsCart.length <= 0) {
@@ -139,8 +138,7 @@ const getProductToCart = async (req, res) => {
 
 const deleteProductInCart = async (req, res) => {
     try {
-        const  { id } = req.query
-        const  { userId } = req.body
+        const { id, userId } = req.query
         const user = await User.findById(userId)
         const indexProduct = user.cart.findIndex(prod => prod._id.toString() === id)
         const deletedProduct = user.cart.splice(indexProduct,1)
@@ -152,7 +150,6 @@ const deleteProductInCart = async (req, res) => {
         console.log(error)
         res.status(500).json({message: 'Error al borrar los productos del carrito'})
     }
-    
 }
 
 module.exports = {
