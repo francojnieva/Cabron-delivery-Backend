@@ -102,14 +102,14 @@ const deleteProduct = async (req, res) => {
 const addProductToCart = async (req, res) => {
     try {
         const  { id } = req.query
-        const  { userId } = req.body
+        const  { userId, counter } = req.body
 
         const user = await User.findById(userId)
         if (!user) return res.status(404).json({ message: 'Usuario no encontrado' })
         
         const product = await ProductsModel.findById(id)
         if (!product) return res.status(404).json({ message: 'Producto no encontrado' })
-
+        product.quantity = counter
         user.cart.push(product)
         await user.save()
         res.status(200).json({ message: 'Producto agregado al carrito' })
