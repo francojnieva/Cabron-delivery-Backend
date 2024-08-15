@@ -59,6 +59,21 @@ const loginUser = async (req, res) => {
     }
 }
 
+const editUser = async (req, res) => {
+    const { id } = req.query
+    const { username, email, password } = req.body
+
+    const hashedPassword = await bcrypt.hash(password, 10)
+
+    const user = await User.findById(id)
+    user.username = username
+    user.email = email
+    user.password = hashedPassword
+    
+    await user.save()
+    res.status(200).json({ message: 'Usuario editado correctamente' })
+}
+
 const getAllUsers = async (req, res) => {
     try {
         const users = await User.find()
@@ -103,6 +118,7 @@ const deleteUser = async (req, res) => {
 module.exports = {
     registerUser,
     loginUser,
+    editUser,
     getAllUsers,
     getOneUser,
     deleteUser
