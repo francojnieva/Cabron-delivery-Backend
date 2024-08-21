@@ -1,6 +1,6 @@
 const { Router } = require('express')
 const upload = require('../middleware/multer')
-const { createPayment } = require('../controllers/pays.controllers')
+const { createPayment } = require('../controllers/payments.controllers')
 
 const router = Router()
 

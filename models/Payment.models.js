@@ -21,6 +21,15 @@ const PaymentSchema = new mongoose.Schema({
     userEmail: {
         type: String,
         trim: true
+    },
+    totalToPay: {
+        type: String
+    },
+    order: {
+        type: Object
+    },
+    dateOrder: {
+        type: String
     }
 })
 
