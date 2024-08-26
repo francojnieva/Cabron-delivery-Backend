@@ -22,7 +22,7 @@ const createPayment = async (req, res) => {
         await templatesPayments(payment)
 
         await payment.save()
-        res.status(201).json({ message: 'Datos enviados' })
+        res.status(201).json({ message: '¡Gracias por tu pedido! Estimamos que llegará en aproximadamente 30-40 minutos.' })
     } catch (error) {
         res.status(500).json({message: 'Error al enviar los datos'})
     }

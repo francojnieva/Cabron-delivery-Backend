@@ -7,7 +7,7 @@ router.post('/api/registro', registerUser)
 router.post('/api/iniciar-sesion', loginUser)
 router.put('/api/editar-usuario', editUser)
 router.get('/api/usuarios', authUser('admin'), getAllUsers)
-router.get('/api/usuario', authUser('admin'), getOneUser)
+router.get('/api/usuario', getOneUser)
 router.delete('/api/usuario', authUser('admin'), deleteUser)
 
 

@@ -77,7 +77,8 @@ const editUser = async (req, res) => {
 const getAllUsers = async (req, res) => {
     try {
         const users = await User.find()
-        res.status(200).json(users)
+       const rolUser = users.filter((user) => user.rol !== 'admin' )
+        res.status(200).json(rolUser)
     } catch (error) {
         console.log(error)
         res.status(500).json({ message: 'Error al obtener los usuarios' })
