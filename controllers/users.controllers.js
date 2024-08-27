@@ -61,12 +61,12 @@ const loginUser = async (req, res) => {
 
 const editUser = async (req, res) => {
     const { id } = req.query
-    const { username, email, password } = req.body
+    const { name, email, password } = req.body
 
     const hashedPassword = await bcrypt.hash(password, 10)
 
     const user = await User.findById(id)
-    user.username = username
+    user.username = name
     user.email = email
     user.password = hashedPassword
     
