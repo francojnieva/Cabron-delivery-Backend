@@ -73,8 +73,7 @@ const editProduct = async (req, res) => {
             return res.status(400).json({ message: 'Todos los campos son obligatorios' })
         }
         
-        const { secure_url } = await cloudinary.uploader.upload(req.file.path)
-        const updatedData = { name, description, price, discount, image: secure_url }
+        const updatedData = { name, description, price, discount }
 
         const editedProduct = await ProductsModel.findByIdAndUpdate(id, updatedData, {new: true})
         res.status(200).json({message: 'Producto editado con éxito', editedProduct})
