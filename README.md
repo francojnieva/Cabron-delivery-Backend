@@ -70,7 +70,7 @@ CLOUDINARY_SECRET=tu_cloudinary_api_secret
 
 npm run dev
 
-[Ver repositorio Cabrón Delivery - Frontend](http://https://github.com/francojnieva/Cabron-delivery-Frontend.git "Ver repositorio Cabrón Delivery Frontend")
+[Ver repositorio Cabrón Delivery - Frontend](http://https://github.com/francojnieva/Cabron-delivery-Frontend.git)
 
 
 
